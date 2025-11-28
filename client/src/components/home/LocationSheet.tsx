@@ -18,9 +18,6 @@ const LocationSheet = ({ sheetRef }: LocationSheetProps) => {
       snapPoints={snapPoints}
       index={-1}
       enablePanDownToClose
-      backgroundStyle={{
-        backgroundColor: "#f5f5f5",
-      }}
       containerStyle={{
         zIndex: 99999,
       }}

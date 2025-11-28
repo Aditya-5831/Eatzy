@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Restaurant {
+  id           String         @id @default(cuid())
+  name         String
+  rating       Decimal        @default(0.0) @db.Decimal(3, 2)
+  image        String
+  coverImage   String
+  latitude     Float
+  longitude    Float
+  categories   Category[]     @relation("RestaurantCategories")
+  openingHours OpeningHours[]
+  menu         Menu[]
+
+  @@map("restaurants")
+}
+
+model Category {
+  id         String       @id @default(cuid())
+  slug       String
+  name       String
+  restaurant Restaurant[] @relation("RestaurantCategories")
+
+  @@map("categories")
+}
+
+model OpeningHours {
+  id           String     @id @default(cuid())
+  dayOfWeek    Int
+  opensAt      String
+  closesAt     String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId String
+
+  @@map("openingHours")
+}
+
+model Menu {
+  id             String         @id @default(cuid())
+  restaurant     Restaurant     @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId   String
+  menuCategories MenuCategory[]
+
+  @@map("menus")
+}
+
+model MenuCategory {
+  id        String     @id @default(cuid())
+  type      String
+  title     String
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  menuId    String
+  menuItems MenuItem[]
+
+  @@map("menuCategories")
+}
+
+model MenuItem {
+  id             String       @id @default(cuid())
+  name           String
+  price          Decimal      @db.Decimal(10, 2)
+  image          String
+  isVeg          Boolean
+  menuCategory   MenuCategory @relation(fields: [menuCategoryId], references: [id])
+  menuCategoryId String
+
+  @@map("menuItems")
+}
