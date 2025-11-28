@@ -7,9 +7,6 @@ const TabsLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        sceneStyle: {
-          backgroundColor: "white",
-        },
       }}
     >
       <Tabs.Screen
