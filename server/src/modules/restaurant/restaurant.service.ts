@@ -42,6 +42,30 @@ export const restaurantService = {
         return restaurants
     },
 
+    getAllRestaurantsByCategory: async (slug: string) => {
+        const restaurants = await db.category.findUnique({
+            where: {
+                slug
+            },
+
+            select: {
+                restaurant: {
+                    select: {
+                        name: true,
+                        image: true,
+                        rating: true
+                    }
+                }
+            }
+        })
+
+        if (!restaurants) {
+            throw new AppError("Restaurants not found", 404)
+        }
+
+        return restaurants
+    },
+
     getSingleRestaurant: async (restaurantId: string) => {
         const restaurant = await db.restaurant.findUnique({
             where: {
