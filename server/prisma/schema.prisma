@@ -21,6 +21,8 @@ model Restaurant {
   coverImage   String
   latitude     Float
   longitude    Float
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
   categories   Category[]     @relation("RestaurantCategories")
   openingHours OpeningHours[]
   menu         Menu[]
