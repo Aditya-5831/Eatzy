@@ -5,10 +5,13 @@ import { restaurantController } from "./restaurant.controller.js";
 const router: Router = Router();
 
 // Add restaurant
-router.post("/", paramsValidator("restaurantId"), restaurantController.addRestaurant)
+router.post("/", restaurantController.addRestaurant)
 
 // Get all restaurants
-router.get("/", paramsValidator("restaurantId"), restaurantController.getAllRestaurants)
+router.get("/", restaurantController.getAllRestaurants)
+
+// Get all restaurants by category
+router.get("/:slug", paramsValidator("slug"), restaurantController.getAllRestaurantsByCategory)
 
 // Get single restaurant
 router.get("/:restaurantId", paramsValidator("restaurantId"), restaurantController.getSingleRestaurant)

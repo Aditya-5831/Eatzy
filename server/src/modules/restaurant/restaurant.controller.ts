@@ -34,6 +34,23 @@ export const restaurantController = {
         }
     },
 
+    getAllRestaurantsByCategory: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const slug = req.params.slug as string
+
+            const restaurants = await restaurantService.getAllRestaurantsByCategory(slug)
+
+            return res.status(200).json({
+                success: true,
+                message: "All restaurants fetched successfully",
+                data: restaurants
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    },
+
     getSingleRestaurant: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const restaurantId = req.params.restaurantId as string
