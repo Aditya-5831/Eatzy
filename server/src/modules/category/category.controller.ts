@@ -1,18 +1,19 @@
 import type { NextFunction, Request, Response } from "express";
 import { categoryService } from "./category.service.js";
+import type { AddCategoryDto } from "./dto/create-category.dto.js";
 
 export const categoryController = {
-    addCategoryToRestaurant: async (req: Request, res: Response, next: NextFunction) => {
+    addCategories: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const data = req.body;
+            const data: AddCategoryDto = req.body
             const restaurantId = req.params.restaurantId as string
 
-            const category = await categoryService.addCategoryToRestaurant(data, restaurantId)
+            const categories = await categoryService.addCategoryToRestaurant(data, restaurantId)
 
             return res.status(201).json({
                 success: true,
-                message: "Catgory created successfully",
-                category
+                message: "Categories fetched successfully",
+                categories
             })
 
         } catch (error) {
