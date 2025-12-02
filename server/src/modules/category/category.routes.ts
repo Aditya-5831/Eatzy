@@ -4,16 +4,16 @@ import { categoryController } from "./category.controller.js";
 
 const router: Router = Router();
 
-// Add category to restaurant
-router.post("/:restaurantId", paramsValidator("restaurantId"), categoryController.addCategoryToRestaurant)
+// Add category
+router.post("/:restaurantId", paramsValidator("restaurantId"), categoryController.addCategories)
 
-// Add category to restaurant
+// Get all categories
 router.get("/", categoryController.getAllCategories)
 
-// Add category to restaurant
+// Update category
 router.put("/", paramsValidator("restaurantId"), categoryController.updateCategory)
 
-// Add category to restaurant
+// Delete category
 router.put("/:restaurantId/:categoryId", paramsValidator("restaurantId"), paramsValidator("categoryId"), categoryController.removeCategoryFromRestaurant)
 
 

@@ -9,12 +9,13 @@ export const categoryService = {
             data: {
                 name: data.name,
                 slug: data.slug,
+                image: data.image,
                 restaurant: {
                     connect: {
                         id: restaurantId
                     }
                 }
-            }
+            },
         })
 
         if (!category) {

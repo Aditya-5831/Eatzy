@@ -1,21 +1,56 @@
-import db from "../../lib/db.js"
+import db from "../../lib/db.js";
 import { AppError } from "../../middlewares/error-handler.middleware.js";
 import type { CreateRestaurantDto } from "./dto/create-restaurant.dto.js";
 import type { UpdateRestaurantDto } from "./dto/update-restaurant.dto.js";
 
-
-
 export const restaurantService = {
     addRestaurant: async (data: CreateRestaurantDto) => {
+        // Create restaurant
         const restaurant = await db.restaurant.create({
-            data
+            data: {
+                name: data.name,
+                image: data.image,
+                coverImage: data.coverImage,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                categories: {
+                    connectOrCreate: data.categories.map(cat => ({
+                        where: {
+                            slug: cat.slug,
+                        },
+                        create: {
+                            name: cat.name,
+                            slug: cat.slug,
+                            image: cat.image
+                        }
+                    }))
+                },
+                menu: {
+                    create: {
+                        menuCategories: {
+                            create: data.menu.flatMap(menuGroup => menuGroup.menuCategories.map(menuCat => ({
+                                type: menuCat.type,
+                                title: menuCat.title,
+                                menuItems: {
+                                    create: menuCat.menuItems.map(item => ({
+                                        name: item.name,
+                                        image: item.image,
+                                        isVeg: item.isVeg,
+                                        price: item.price
+                                    }))
+                                }
+                            })))
+                        }
+                    }
+                }
+            }
         })
 
         if (!restaurant) {
             throw new AppError("Failed to create restaurant", 400)
         }
 
-        return restaurant
+        return restaurant;
     },
 
     getAllRestaurants: async () => {

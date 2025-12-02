@@ -1,10 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 import { restaurantService } from "./restaurant.service.js";
+import type { CreateRestaurantDto } from "./dto/create-restaurant.dto.js";
 
 export const restaurantController = {
     addRestaurant: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const data = req.body
+            const data: CreateRestaurantDto = req.body
 
             const restaurant = await restaurantService.addRestaurant(data)
 

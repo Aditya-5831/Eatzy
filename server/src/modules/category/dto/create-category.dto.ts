@@ -1,4 +1,5 @@
 export type AddCategoryDto = {
     name: string;
-    slug: string
+    slug: string;
+    image: string
 }
